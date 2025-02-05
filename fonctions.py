@@ -35,7 +35,7 @@ def show_webscrapper_data(st):
     categories = {
         "./data/vehicules.csv": "🚗 Véhicules",
         "./data/motos.csv": "🏍️ Motos",
-        "./data/locations-vehicules.csv": "🚕 Locations de véhicules",
+        "./data/locations_vehicules.csv": "🚕 Locations de véhicules",
         "./data/telephones.csv": "📱 Téléphones",
     }
 
