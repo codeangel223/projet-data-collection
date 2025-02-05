@@ -9,7 +9,7 @@
 - [x] Implémenter une fonction pour scrapper les pages avec Bs4
 - [x] Pepline de netoyage des données scrappées avec Bs4 (Feature Eng)
 - [x] Afficher les datasets nettoyé en fonction du nb de page selected
-- [] Afficher les datasets non nettoyes de webscrapper
+- [x] Afficher les datasets non nettoyes de webscrapper
 - [] Netoyer les donnees provenant de webscrapper
 - [] Afficher un tableau de bord des donnes nettoyees (Data Viz)
 - [] Configurer l'app pour la production(requirements, datasets, environments)
