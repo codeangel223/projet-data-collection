@@ -1,0 +1,47 @@
+{
+  "_id": "vehicules",
+  "startUrl": [
+    "https://dakarvente.com/index.php?page=annonces_rubrique&url_categorie_2=vehicules&id=2&sort=&nb=[1-100]"
+  ],
+  "selectors": [
+    {
+      "id": "links",
+      "parentSelectors": ["_root"],
+      "type": "SelectorLink",
+      "selector": ".content-desc a",
+      "multiple": true,
+      "linkType": "linkFromHref"
+    },
+    {
+      "id": "marque",
+      "parentSelectors": ["links"],
+      "type": "SelectorText",
+      "selector": "span > div:nth-of-type(2)",
+      "multiple": false,
+      "regex": ""
+    },
+    {
+      "id": "price",
+      "parentSelectors": ["links"],
+      "type": "SelectorText",
+      "selector": ".block-27-price span:nth-of-type(1)",
+      "multiple": false,
+      "regex": ""
+    },
+    {
+      "id": "adresse",
+      "parentSelectors": ["links"],
+      "type": "SelectorText",
+      "selector": ".block-info > div.block-27-desc",
+      "multiple": false,
+      "regex": ""
+    },
+    {
+      "id": "image-link",
+      "parentSelectors": ["links"],
+      "type": "SelectorImage",
+      "selector": ".slick-current img.block-26-main-img",
+      "multiple": false
+    }
+  ]
+}
