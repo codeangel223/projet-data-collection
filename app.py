@@ -14,7 +14,7 @@ if st.button("Ressources"):
 # Side Bar
 st.sidebar.markdown("## Menu de control")
 nb_page = int(st.sidebar.number_input(
-    'Sélectionnez le nombre de page ?', step=1, min_value=1, max_value=20))
+    'Sélectionnez le nombre de page ?', step=1, min_value=1, max_value=5))
 
 if st.sidebar.button("Bs4/Selenium"):
     show_bs4_scrapping_data(st, nb_page)
