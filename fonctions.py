@@ -42,9 +42,9 @@ def show_webscrapper_data(st):
     for path, title in categories.items():
         st.markdown(f"#### {title}")
 
-        # df = pd.read_csv(path)
+        df = pd.read_csv(path)
 
-        # st.dataframe(df)
+        st.dataframe(df)
 
 
 def show_dashboard(st):
