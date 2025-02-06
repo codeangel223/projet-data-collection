@@ -22,8 +22,29 @@ if st.sidebar.button("Bs4/Selenium"):
 if st.sidebar.button("Web scrapper"):
     show_webscrapper_data(st)
 
+if "dashboard_clicked" not in st.session_state:
+    st.session_state.dashboard_clicked = False
+
 if st.sidebar.button("Dashboard"):
-    show_dashboard(st)
+    st.session_state.dashboard_clicked = True
+
+if st.session_state.dashboard_clicked:
+
+    categories = {
+        "all": "Vue d'ensemble",
+        "vehicules": "🚗 Véhicules",
+        "motos": "🏍️ Motos",
+        "location_vehicule": "🚕 Locations de véhicules",
+        "telephones": "📱 Téléphones",
+    }
+
+    cat_selected_label = st.selectbox(
+        "Sélectionnez une catégorie d'article", list(categories.values()))
+
+    cat_selected_key = [
+        key for key, value in categories.items() if value == cat_selected_label][0]
+
+    show_dashboard(st, cat_selected_key, cat_selected_label)
 
 if st.sidebar.button("Evaluer le projet"):
     st.write('<iframe src="https://ee.kobotoolbox.org/i/xnuAwepx" width="800" height="600"></iframe>',
