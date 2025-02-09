@@ -1,8 +1,8 @@
 import streamlit as st
 
-st.markdown("# **Projet de fin de module:** Data Collection")  
-st.markdown("## **Prof:** Abdoul Wahab Diallo")  
-st.markdown("### **Étudiant:** Moussa MALLE - Master1 - DIT")  
+st.markdown("# **Projet de fin de module:** Data Collection")
+st.markdown("## **Prof:** Abdoul Wahab Diallo")
+st.markdown("### **Étudiant:** Moussa MALLE - Master1 - DIT")
 
 st.markdown(
     '<a href="/">'
@@ -15,6 +15,5 @@ st.write("")
 st.write("")
 
 # Liens utiles
-st.markdown("**Github:** [https://gh.com/...](https://gh.com/...)")  
-st.markdown("**Vidéos:** [https://gh.com/...](https://gh.com/...)")  
-st.markdown("**Files:** [https://gh.com/...](https://gh.com/...)")
+st.markdown(
+    "**Github:** [https://github.com/codeangel223/projet-data-collection](https://github.com/codeangel223/projet-data-collection)")
