@@ -2,9 +2,9 @@ import streamlit as st
 from fonctions import *
 
 st.set_page_config(
-    page_title="Moussa MALLE - Data Collection Project - Dakar Auto Project - DIT")
+    page_title="Moussa MALLE - Data Collection Project - CoinAfrica Project - DIT")
 
-st.title("Moussa MALLE - Data Collection Project - Dakar Auto Project - DIT")
+st.title("Moussa MALLE - Data Collection Project - CoinAfrica Project - DIT")
 
 
 if st.button("Ressources"):
