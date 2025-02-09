@@ -58,7 +58,7 @@ def clean_data(data):
 
     # features created
     data_cleaned["pays"] = data["adresse"].split(",")[-1]
-    data_cleaned["ville"] = data["adresse"].split(",")[1]
+    data_cleaned["ville"] = data["adresse"].split(",")[-2]
     data_cleaned["quartier"] = data["adresse"].split(",")[0]
 
     # Transform Prix
