@@ -36,9 +36,9 @@ def show_webscrapper_data(st):
 
     categories = {
         "./data/chiens.csv": "🐶 Chiens",
-        # "./data/motos.csv": "🏍️ Motos",
-        # "./data/locations_vehicules.csv": "🚕 Locations de véhicules",
-        # "./data/telephones.csv": "📱 Téléphones",
+        "./data/moutons.csv": "🐑 Moutons",
+        "./data/other-animals.csv": "🦔 Autres animaux",
+        "./data/volailles.csv": "🐔 Poules, lapins et pigeons",
     }
 
     for path, title in categories.items():
