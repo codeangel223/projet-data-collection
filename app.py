@@ -35,10 +35,10 @@ if st.session_state.dashboard_clicked:
 
     categories = {
         "all": "Vue d'ensemble",
-        "vehicules": "🚗 Véhicules",
-        "motos": "🏍️ Motos",
-        "location_vehicule": "🚕 Locations de véhicules",
-        "telephones": "📱 Téléphones",
+        "chiens": "🐶 Chiens",
+        "moutons": "🐑 Moutons",
+        "other_animals": "🦔 Autres animaux",
+        "volailles": "🐔 Poules, lapins et pigeons",
     }
 
     cat_selected_label = st.selectbox(

@@ -11,10 +11,10 @@ def show_bs4_scrapping_data(st, nb_page=1):
     st.markdown(f"### Start scrapping...")
 
     categories = {
-        "vehicules": "🚗 Véhicules",
-        "motos": "🏍️ Motos",
-        "location_vehicule": "🚕 Locations de véhicules",
-        "telephones": "📱 Téléphones",
+        "chiens": "🐶 Chiens",
+        "moutons": "🐑 Moutons",
+        "other_animals": "🦔 Autres animaux",
+        "volailles": "🐔 Poules, lapins et pigeons",
     }
 
     for key, title in categories.items():
@@ -35,10 +35,10 @@ def show_webscrapper_data(st):
     st.markdown("## Web Scrapper")
 
     categories = {
-        "./data/vehicules.csv": "🚗 Véhicules",
-        "./data/motos.csv": "🏍️ Motos",
-        "./data/locations_vehicules.csv": "🚕 Locations de véhicules",
-        "./data/telephones.csv": "📱 Téléphones",
+        "./data/chiens.csv": "🐶 Chiens",
+        # "./data/motos.csv": "🏍️ Motos",
+        # "./data/locations_vehicules.csv": "🚕 Locations de véhicules",
+        # "./data/telephones.csv": "📱 Téléphones",
     }
 
     for path, title in categories.items():
