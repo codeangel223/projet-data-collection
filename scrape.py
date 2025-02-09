@@ -3,61 +3,37 @@ import pandas as pd
 import re
 import requests
 
-base_url = "https://dakarvente.com/index.php?"
+base_url = "https://sn.coinafrique.com"
+category_base_path = "/categorie"
+paths = {
+    "chiens": "/chiens",
+    'moutons': "/moutons",
+    "other_animals": "/autres-animaux",
+    "volailles": "/poules-lapins-et-pigeons",
+}
 
-params = [
-    {
-        "id": "2",
-        "__category": "vehicules",
-        "page": "annonces_rubrique",
-        "url_categorie_2": "vehicules",
-        "sort": "",
-    },
-    {
-        "id": "3",
-        "__category": "motos",
-        "page": "annonces_categorie",
-        "sort": "",
-    },
-    {
-        "id": "8",
-        "__category": "location_vehicule",
-        "page": "annonces_categorie",
-        "sort": "",
-    },
-    {
-        "id": "32",
-        "__category": "telephones",
-        "page": "annonces_categorie",
-        "sort": "",
-    },
-]
-
-url_1 = "https://dakarvente.com/annonces-rubrique-vehicules-2.html"
-url_2 = " https://dakarvente.com/annonces-categorie-motos-3.html"
-url_3 = " https://dakarvente.com/annonces-categorie-location-de-vehicules-8.html"
-url_4 = " https://dakarvente.com/annonces-categorie-telephones-32.html"
-
-# marque - price - adresse - image_link
+# name - price - adresse - article_link
+initial_columns = ["name", "price", "adresse",
+                   "price", "article_link", "image_link_src"]
+new_columns = ["name", "price", "devise", "quartier", "ville",
+               "pays", "adresse", "article_link", "image_link_src"]
 
 
-def create_url_list(nb_page, category):
+def create_url_list(nb_page, category, numero_page=None):
+
     urls = []
 
-    for param_index, p in enumerate(params):
+    if numero_page:
+        return [f"{base_url}{category_base_path}{value}?page={numero_page}"]
 
-        if p["__category"] == category:
-            for page in range(1, 101):
+    for key, value in paths.items():
 
-                param = params[param_index]
+        if key == category:
+            for page in range(1, nb_page+1):
 
-                url = base_url + ""
-                for key, val in param.items():
-                    url += "&" + key + "=" + val
-
-                url += "&" + "nb=" + str(page)
+                url = f"{base_url}{category_base_path}{value}?page={page}"
                 urls.append(url)
-    return urls[:nb_page] if nb_page else urls
+    return urls
 
 
 def get_page_links(page_url):
@@ -65,10 +41,10 @@ def get_page_links(page_url):
     soup = BeautifulSoup(content.text, "html.parser")
 
     urls = []
-    links = soup.select("div.content-desc > a")
+    links = soup.select(".ad__card-description a")
     for a in links:
         try:
-            urls.append(a["href"])
+            urls.append(base_url + a["href"])
         except:
             continue
 
@@ -78,12 +54,20 @@ def get_page_links(page_url):
 # Pepline de nettoyage
 def clean_data(data):
     data_cleaned = data.copy()
-    data_cleaned["marque"] = data["marque"].split(":")[-1].strip()
     data_cleaned["adresse"] = data["adresse"].strip()
-    data_cleaned["price"] = int(data["price"].strip().split(" ")[
-                                0].replace(".", ""))
-    data["devise"] = data["price"].strip().split(" ")[-1]
 
+    # features created
+    data_cleaned["pays"] = data["adresse"].split(",")[-1]
+    data_cleaned["ville"] = data["adresse"].split(",")[1]
+    data_cleaned["quartier"] = data["adresse"].split(",")[0]
+
+    # Transform Prix
+    try:
+        data_cleaned["price"] = int("".join(data["price"].split(" ")[:-1]))
+        data_cleaned["devise"] = data["price"].strip().split(" ")[-1]
+    except:
+        data_cleaned["price"] = "Prix sur demande" if data["price"] == "Sur demande" else None
+        data_cleaned["devise"] = None
     return data_cleaned
 
 
@@ -92,41 +76,42 @@ def get_now_article_data(article_link):
     content = requests.get(article_link)
     soup = BeautifulSoup(content.text, "html.parser")
 
-    price = soup.select_one("div.col-info-inner .new-price").getText()
-    marque = soup.find("img", attrs={"alt": "marque"}).parent.getText()
-    adresse = soup.find("img", attrs={"alt": "localisation"}).parent.getText()
-    image_link = soup.select_one(
-        "img.block-26-thumbs-img")
+    name = soup.select_one(".hide-on-med-and-down h1").getText()
+    price = soup.select_one(".hide-on-med-and-down p.price").getText()
+    adresse = soup.select_one(
+        ".hide-on-med-and-down [data-address] span").getText()
+    image_link_src = None
+
+    image_div = soup.find('div', class_='swiper-slide')
+    if image_div and 'style' in image_div.attrs:
+        style = image_div['style']
+        match = re.search(r'background-image:\s*url\((.*?)\)', style)
+        if match:
+            image_link_src = match.group(1).strip("'\"")
 
     sep = ".com/"
 
     article_data = {
-        "image_link": base_url.split(sep)[0] + sep + image_link["src"] if image_link["src"] else None,
-        "adresse": adresse,
-        "marque": marque,
+        "name": name,
         "price": price,
+        "adresse": adresse,
+        "image_link_src": image_link_src,
         "article_link": article_link
     }
-
+    # return article_data
     data_cleaned = clean_data(article_data)
 
     return data_cleaned
 
 
-def get_page_data(nb_page, category):
+def get_all_items_data_for_category(nb_page, category, numero_page):
     print("Start...")
 
     data_table = []
 
     # Recuperer toutes les pages contanant les articles
-    urls = create_url_list(nb_page=nb_page, category=category)  # 400 pages
-
-    # filtered_urls = []
-    # for url in urls:
-    #     match = re.search(r"[?&]__category=([^&]*)", url)
-    #     category = match.group(1) if match else None
-    #     if category:
-    #         filtered_urls.append(url)
+    urls = create_url_list(nb_page=nb_page, category=category,
+                           numero_page=numero_page)  # 40 pages
 
     articles_link = []
 
@@ -143,15 +128,18 @@ def get_page_data(nb_page, category):
             data_table.append(data_row)
 
         except Exception as e:
-            # print("Error", e)
+            print("Error", e)
             continue
 
     print("FINISHED")
     return data_table
 
 
-def get_data_frame(nb_page=1, category="vehicules"):
-    data_table = get_page_data(nb_page, category)
-    columns = ["image_link", "adresse", "marque", "price", "article_link"]
-    df = pd.DataFrame(columns=columns, data=data_table)
+def get_data_frame(nb_page=1, category="chiens", numero_page=None):
+    data_table = get_all_items_data_for_category(
+        nb_page, category, numero_page)
+    df = pd.DataFrame(columns=new_columns, data=data_table)
     return df
+
+
+# get_data_frame()
