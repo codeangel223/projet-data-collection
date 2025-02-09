@@ -1,0 +1,46 @@
+{
+  "_id": "chiens",
+  "startUrl": ["https://sn.coinafrique.com/categorie/chiens?page=[1-100]"],
+  "selectors": [
+    {
+      "id": "links",
+      "linkType": "linkFromHref",
+      "multiple": true,
+      "parentSelectors": ["_root"],
+      "selector": ".ad__card-description a",
+      "type": "SelectorLink"
+    },
+    {
+      "id": "name",
+      "multiple": false,
+      "parentSelectors": ["links"],
+      "regex": "",
+      "selector": ".hide-on-med-and-down h1",
+      "type": "SelectorText"
+    },
+    {
+      "id": "price",
+      "multiple": false,
+      "parentSelectors": ["links"],
+      "regex": "",
+      "selector": ".hide-on-med-and-down p.price",
+      "type": "SelectorText"
+    },
+    {
+      "id": "adresse",
+      "multiple": false,
+      "parentSelectors": ["links"],
+      "regex": "",
+      "selector": ".hide-on-med-and-down [data-address] span",
+      "type": "SelectorText"
+    },
+    {
+      "extractAttribute": "style",
+      "id": "image-link-src",
+      "multiple": false,
+      "parentSelectors": ["links"],
+      "selector": "#slider div.swiper-slide-active",
+      "type": "SelectorElementAttribute"
+    }
+  ]
+}
