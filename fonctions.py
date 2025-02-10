@@ -60,7 +60,7 @@ def show_dashboard(st, cat_selected_key, cat_selected_label):
     if cat_selected_key == "all":
         fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 10), dpi=200)
 
-        sns.countplot(x=all_df["category"], ax=axes[0])
+        sns.countplot(x=all_df["category"], ax=axes[0], palette="hsv")
         axes[0].set_xlabel("Catégorie d'article")
         axes[0].set_ylabel("Nombre d'articles")
         axes[0].set_title("Répartition des articles par catégorie")
@@ -77,19 +77,20 @@ def show_dashboard(st, cat_selected_key, cat_selected_label):
         st.pyplot(fig)
 
     else:
-        fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(16, 12), dpi=200)
+        fig = plt.figure(figsize=(16, 12), dpi=200)
 
         df = all_df[all_df["category"] == cat_selected_key]
-        sns.countplot(x=df["price"], ax=axes[0])
-        axes[0].set_xlabel("Les prix")
-        axes[0].set_ylabel("Nombre total")
-        axes[0].tick_params(axis="x", rotation=90)  # Rotation des étiquettes X
-        axes[0].set_title("Les prix en fonction du nombre total d'animaux")
+        sns.countplot(x=df["price"].value_counts(
+            ascending=True),  palette="hsv")
+        plt.xlabel("Les prix")
+        plt.ylabel("Nombre total")
+        plt.tick_params(axis="x", rotation=90)
+        plt.title("Les prix en fonction du nombre total d'animaux")
 
-        villes_ser = df["ville"]
-        labels = villes_ser.value_counts().index
-        values = villes_ser.value_counts().values
-        axes[1].pie(values, labels=labels, autopct="%1.1f%%")
+        # villes_ser = df["ville"]
+        # labels = villes_ser.value_counts().index
+        # values = villes_ser.value_counts().values
+        # axes[1].pie(values, labels=labels, autopct="%1.1f%%")
 
         plt.tight_layout(h_pad=2)
         st.pyplot(fig)
